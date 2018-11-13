@@ -1,2 +1,2 @@
 # shopping-mini-program-demo
-- for learning.
+- Only for learning.
