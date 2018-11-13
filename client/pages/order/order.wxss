@@ -1,0 +1,102 @@
+/* pages/order/order.wxss */
+.order-head {
+  display: flex;
+  margin: 25rpx 25rpx 0;
+  align-items: center;
+}
+
+.order-line {
+  width: 21rpx;
+  height: 34rpx;
+}
+
+.order-head-text {
+  margin-left: 10rpx;
+  font-size: 25rpx;
+  line-height: 35rpx;
+  color: rgba(52, 55, 61, 0.8);
+}
+
+.orderList {
+  border-radius: 13rpx;
+  background: #ffffff;
+  margin: 29rpx 25rpx 0;
+  box-shadow: 0 2rpx 13rpx 5rpx rgba(0, 0, 0, 0.02);
+}
+
+.orderItem {
+  display: flex;
+  padding: 25rpx 20rpx;
+  border-bottom: 1px solid rgba(151, 151, 151, 0.2);
+}
+
+.orderItem:last-child {
+  border-bottom: none;
+}
+
+.orderItem-image {
+  flex-shrink: 0;
+  width: 160rpx;
+  height: 160rpx;
+}
+
+.orderItem-meta {
+  flex: 1;
+  margin-left: 39rpx;
+  font-size: 28rpx;
+  line-height: 40rpx;
+}
+
+.orderItem-name {
+  color: rgba(29, 29, 38, 0.8); 
+}
+
+.orderItem-price {
+  font-weight: bold;
+  margin-top: 12rpx;
+}
+
+.orderItem-module {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100rpx;
+  justify-content: space-between;
+  font-size: 28rpx;
+  line-height: 52rpx;
+}
+
+.orderItem-btn {
+  height: 52rpx;
+  background: #F5E069;
+  border-radius: 8rpx;
+  text-align: center;
+}
+
+.orderItem-count {
+  text-align: right;
+}
+
+
+.order-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 37rpx 27rpx;
+  height: 431rpx;
+  background: #FFFFFF;
+  box-shadow: 0 2rpx 13rpx 5rpx rgba(0, 0, 0, 0.02);
+  border-radius: 13rpx;
+}
+ .empty-image {
+  margin-bottom: 29rpx;
+  width: 90rpx;
+  height: 90rpx;
+  opacity: 0.4;
+}
+ .empty-text {
+  font-size: 28rpx;
+  line-height: 40rpx;
+  color: rgba(139, 139, 139, 0.8);
+} 

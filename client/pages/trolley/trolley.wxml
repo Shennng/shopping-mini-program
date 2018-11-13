@@ -1,0 +1,46 @@
+<!--pages/trolley/trolley.wxml-->
+<!--
+<image class="bg" src='../../images/bg.png'></image>
+<view wx:if="{{!userInfo}}">
+  <view class="unlogin-card">
+    <view class="unlogin-head"></view>
+    <view class="unlogin-info">
+      <view class="unlogin-text">未登录</view>
+      <view class="unlogin-tips">点击微信登录后可方便购物</view>
+    </view>
+  </view>
+  <button wx:if="{{authType==0}}" class="unlogin-btn" open-type='getUserInfo' bindgetuserinfo='onTapLogin'>微信登录</button>
+  <button wx:if="{{authType==1}}" class="unlogin-btn" open-type='openSetting' bindopensetting="onTapLogin">授权登录</button>
+</view> -->
+
+<view wx:if="{{ trolleyList }}">
+  <view class="trolley-head" >
+    <view class="trolley-totalCheck">
+      <view class="trolley-totalCheck-opred" wx:if="{{ isTrolleyTotalCheck }}">
+        <image class="trolley-totalCheck-img" src="../../images/check.png" mode="widthFix"></image>
+      </view>
+      <view class="trolley-totalCheck-opr" wx:else></view>
+      <view class="trolley-totalCheck-text">全选</view>
+    </view>
+    <view class="trolley-edit">编辑</view>
+  </view>
+
+  <view class="trolley-list">123</view>
+
+  <view class="trolley-bottom">
+    <view class="trolley-totalCheck">
+      <view class="trolley-totalCheck-opred" wx:if="{{ isTrolleyTotalCheck }}">
+        <image class="trolley-totalCheck-img" src="../../images/check.png" mode="widthFix"></image>
+      </view>
+      <view class="trolley-totalCheck-opr" wx:else></view>
+      <view class="trolley-totalCheck-text">全选</view>
+    </view>
+    <view class="trolley-account">
+      <view class="trolley-account-text">总价</view>
+      <view class="trolley-account-money">¥ {{trolleyAccount}}</view>
+    </view>
+    <view class="trolley-submit">结算</view>
+  </view>
+</view>
+
+<view class="trolley-empty" wx:else>空</view>
