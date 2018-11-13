@@ -1,3 +1,2 @@
 # shopping-mini-program-demo
-for learning.
----
+- for learning.
