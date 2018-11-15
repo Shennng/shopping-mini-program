@@ -37,5 +37,39 @@ Page({
         console.log("failed! home")
       }
     })
+  },
+  onTapAddToTrolley(event) {
+    let product = {
+      id: + event.currentTarget.dataset.id
+    }
+    console.log(product)
+    qcloud.request({
+      url: config.service.trolleyUrl,
+      login: true,
+      method: "PUT",
+      data: product,
+      success: res => {
+        let data = res.data
+        console.log(res)
+        if (!data.code) {
+          wx.showToast({
+            title: "加购成功!"
+          })
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: '请先登录',
+            showCancel: false
+          })
+        }
+      },
+      fail: res => {
+        wx.showModal({
+          title: '提示',
+          content: '请先登录',
+          showCancel: false
+        })
+      }
+    })
   }
 })

@@ -1,5 +1,7 @@
 // pages/trolley/trolley.js
 const app = getApp()
+const qcloud = require("../../vendor/wafer2-client-sdk/index.js")
+const config = require("../../config.js")
 
 Page({
 
@@ -9,25 +11,11 @@ Page({
   data: {
     userInfo: null,
     authType: app.data.authType,
-    trolleyList: [{
-      id: 1,
-      name: '商品1',
-      image: 'https://s3.cn-north-1.amazonaws.com.cn/u-img/product1.jpg',
-      price: 45,
-      source: '海外·瑞典',
-      count: 1,
-    }, {
-      id: 2,
-      name: '商品2',
-      image: 'https://s3.cn-north-1.amazonaws.com.cn/u-img/product2.jpg',
-      price: 158,
-      source: '海外·新西兰',
-      count: 3,
-    }], // 购物车商品列表
-    trolleyCheckMap: [undefined, true, undefined], // 购物车中选中的id哈希表
-    trolleyAccount: 45, // 购物车结算总价
+    trolleyList: [], // 购物车商品列表
+    trolleyCheckMap: [], // 购物车中选中的id哈希表
+    trolleyAccount: 0, // 购物车结算总价
     isTrolleyEdit: false, // 购物车是否处于编辑状态
-    isTrolleyTotalCheck: true, // 购物车中商品是否全选
+    isTrolleyTotalCheck: false, // 购物车中商品是否全选
   },
 
   /**
@@ -43,10 +31,48 @@ Page({
           userInfo: userInfo,
           authType: app.data.authType
         })
+        this.getTrolley()
       },
       error: () => {
         this.setData({
           authType: app.data.authType
+        })
+      }
+    })
+  },
+  getTrolley() {
+    wx.showLoading({
+      title: '购物车数据加载中',
+    })
+    qcloud.request({
+      url: config.service.trolleyUrl,
+      login: true,
+      success: res => {
+        wx.hideLoading()
+        let data = res.data
+        if (!data.code) {
+          let trolleyList = data.data
+          let trolleyCheckMap = []
+          trolleyList.forEach(() => {
+            trolleyCheckMap.push(undefined)
+          })
+          this.setData({
+            trolleyList,
+            trolleyCheckMap
+          })
+          console.log(trolleyCheckMap)
+        } else {
+          wx.showToast({
+            icon: "none",
+            title: '未成功获取数据',
+          })
+        }
+      },
+      fail: res => {
+        wx.hideLoading()
+        wx.showToast({
+          icon: "none",
+          title: '未成功获取数据',
         })
       }
     })
@@ -68,6 +94,7 @@ Page({
           userInfo,
           authType: app.data.authType
         })
+        this.getTrolley()
       }
     })
   },

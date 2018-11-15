@@ -84,6 +84,44 @@ Page({
       }
     })
   },
+  onTapAddToTrolley() {
+    let product = {
+      id: this.data.product.id
+    }
+
+    wx.showLoading({
+      title: '加购中...',
+    })
+    qcloud.request({
+      url: config.service.trolleyUrl,
+      login: true,
+      method: "PUT",
+      data: product,
+      success: res => {
+        wx.hideLoading()
+        let data = res.data
+        if (!data.code) {
+          wx.showToast({
+            title: '加购成功',
+          })
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: '请先登录',
+            showCancel: false
+          })
+        }
+      },
+      fail: res => {
+        wx.hideLoading()
+        wx.showModal({
+          title: '提示',
+          content: '请先登录',
+          showCancel: false
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

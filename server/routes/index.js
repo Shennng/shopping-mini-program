@@ -41,7 +41,13 @@ router.get("/product/:id", controllers.product.detail)
 //创建订单
 router.post("/order", validationMiddleware, controllers.order.add)
 
-//获取所有订单数据
+//获取该用户所有订单数据
 router.get("/order", validationMiddleware, controllers.order.list)
+
+//添加到或更新购物车
+router.put("/trolley", validationMiddleware, controllers.trolley.add)
+
+//获取该用户所有购物车数据
+router.get("/trolley", validationMiddleware, controllers.trolley.list)
 
 module.exports = router
