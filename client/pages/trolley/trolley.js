@@ -40,6 +40,151 @@ Page({
       }
     })
   },
+  onTapTrolleyEdit() {
+    let isTrolleyEdit = this.data.isTrolleyEdit
+
+    if (isTrolleyEdit) {
+      this.updateTrolley()
+    } else {
+      this.setData({
+        isTrolleyEdit: !isTrolleyEdit
+      })
+    }
+  },
+  updateTrolley() {
+    wx.showLoading({
+      title: '提交中...',
+    })
+
+    let trolleyList = this.data.trolleyList
+
+    qcloud.request({
+      url: config.service.trolleyUrl,
+      method: "POST",
+      login: true,
+      data: {
+        list: trolleyList
+      },
+      success: res => {
+        wx.hideLoading()
+        let data = res.data
+
+        if (!data.code) {
+          wx.showToast({
+            title: '提交成功',
+          })
+          this.setData({
+            isTrolleyEdit: false
+          })
+          console.log(trolleyList)
+        } else {
+          wx.showToast({
+            icon: "none",
+            title: '提交失败',
+          })
+        }
+      },
+      fail: res => {
+        wx.hideLoading()
+        wx.showToast({
+          icon: "none",
+          title: '提交失败',
+        })
+      }
+    })
+  },
+  onTapModifyCount(event) {
+    let dataset = event.currentTarget.dataset
+    let presentIndex = dataset.index
+    let ModifyType = dataset.type
+    let trolleyCheckMap = this.data.trolleyCheckMap
+    let trolleyList = this.data.trolleyList
+    //这是一种引用传递（或者叫传址），任何对 product 的操作都会影响到 trolleyList[index]
+    let product = trolleyList[presentIndex]
+    
+
+    if (product) {
+      // 点击加号
+      if (ModifyType == "add") {
+        product.count++
+      } else {
+        // 点击减号
+        if (product.count <= 1) {
+          // 删去该购物车商品相关记录
+          delete trolleyCheckMap[product.id]  //删除后，会留下undefined
+          trolleyList.splice(+ presentIndex, 1)  //删除后，不会留下undefined
+        } else {
+          product.count--
+        }
+      }
+    }
+
+    //调整总价
+    let trolleyAccount = this.getTrolleyAccount(trolleyList, this.data.trolleyCheckMap)
+
+    this.setData({
+      trolleyList,
+      trolleyAccount
+    })
+  },
+  getTrolleyAccount(trolleyList, trolleyCheckMap) {
+    let trolleyAccount = 0
+
+    trolleyList.forEach(item => {
+      let itemAccount = item.price * item.count
+      trolleyAccount = (trolleyCheckMap[item.id] ? trolleyAccount + itemAccount : trolleyAccount)
+    })
+
+    return trolleyAccount
+  },
+  onTapCheckSingle(event) {
+    let checkId = event.currentTarget.dataset.id
+    let trolleyCheckMap = this.data.trolleyCheckMap
+    let trolleyList = this.data.trolleyList
+    let isTrolleyTotalCheck = this.data.isTrolleyTotalCheck
+    let numTotalProduct
+    let numCheckedProduct = 0
+
+    // 单个商品选中/取消
+    trolleyCheckMap[checkId] = !trolleyCheckMap[checkId]
+
+    // 监测全选按钮是否应点亮
+    numTotalProduct = trolleyList.length
+    trolleyCheckMap.forEach(checked => {
+      numCheckedProduct = checked ? numCheckedProduct + 1 : numCheckedProduct
+    })
+
+    isTrolleyTotalCheck = (numTotalProduct === numCheckedProduct) ? true : false
+
+    let trolleyAccount = this.getTrolleyAccount(trolleyList, trolleyCheckMap)
+
+    this.setData({
+      trolleyCheckMap,
+      isTrolleyTotalCheck,
+      trolleyAccount
+    })
+  },
+  onTapCheckTotal() {
+    let isTrolleyTotalCheck = this.data.isTrolleyTotalCheck
+    let trolleyCheckMap = this.data.trolleyCheckMap
+    let trolleyList = this.data.trolleyList
+
+    // 全选按钮状态改变
+    isTrolleyTotalCheck = !isTrolleyTotalCheck
+
+    // 所有购物车商品跟随全选按钮发生改变
+    trolleyList.forEach(item => {
+      trolleyCheckMap[item.id] = isTrolleyTotalCheck
+    })
+
+    let trolleyAccount = this.getTrolleyAccount(trolleyList, trolleyCheckMap)
+
+    this.setData({
+      trolleyCheckMap,
+      isTrolleyTotalCheck,
+      trolleyAccount
+    })
+  },
   getTrolley() {
     wx.showLoading({
       title: '购物车数据加载中',
@@ -52,15 +197,9 @@ Page({
         let data = res.data
         if (!data.code) {
           let trolleyList = data.data
-          let trolleyCheckMap = []
-          trolleyList.forEach(() => {
-            trolleyCheckMap.push(undefined)
-          })
           this.setData({
-            trolleyList,
-            trolleyCheckMap
+            trolleyList
           })
-          console.log(trolleyCheckMap)
         } else {
           wx.showToast({
             icon: "none",
@@ -73,6 +212,65 @@ Page({
         wx.showToast({
           icon: "none",
           title: '未成功获取数据',
+        })
+      }
+    })
+  },
+  onTapPay() {
+    if (!this.data.trolleyAccount) return
+    
+    wx.showLoading({
+      title: '结算中...',
+    })
+
+    let trolleyCheckMap = this.data.trolleyCheckMap
+    let trolleyList = this.data.trolleyList
+    let payList = trolleyList.filter(product => {
+      return !!trolleyCheckMap[product.id]
+    })
+
+    //for (let i = 0; i < trolleyList.length; i++) {
+    //  if (trolleyCheckMap[trolleyList[i].id]) {
+    //    let item = Object.assign({
+    //      count: 1
+    //    }, trolleyList[i])
+    //    payList.push(item)
+    //  }
+    //}
+
+    qcloud.request({
+      url: config.service.orderUrl,
+      login: true,
+      method: "POST",
+      data: {
+        list: payList
+      },
+      success: res => {
+        wx.hideLoading()
+        let data = res.data
+
+        if (!data.code) {
+          wx.showToast({
+            title: '结算完成',
+          })
+          this.setData({
+            trolleyCheckMap: [],
+            trolleyAccount: 0,
+            isTrolleyTotalCheck: false
+          })
+          this.getTrolley()
+        } else {
+          wx.showToast({
+            icon: "none",
+            title: '结算失败',
+          })
+        }
+      },
+      fail: res => {
+        wx.hideLoading()
+        wx.showToast({
+          icon: "none",
+          title: '结算失败',
         })
       }
     })

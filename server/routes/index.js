@@ -50,4 +50,7 @@ router.put("/trolley", validationMiddleware, controllers.trolley.add)
 //获取该用户所有购物车数据
 router.get("/trolley", validationMiddleware, controllers.trolley.list)
 
+//删除旧数据，更新购物车数据
+router.post("/trolley", validationMiddleware, controllers.trolley.update)
+
 module.exports = router

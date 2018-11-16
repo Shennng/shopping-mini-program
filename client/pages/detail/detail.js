@@ -59,7 +59,8 @@ Page({
       login: true,
       method: "POST",
       data: {
-        list: [product]
+        list: [product],
+        isInstantBuy: true  //判断是否为即时购买
       },
       success: res => {
         wx.hideLoading()
