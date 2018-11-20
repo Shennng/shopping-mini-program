@@ -19,14 +19,14 @@
     <view class="order-head-text">已完成</view>
   </view>
   <view class="orderList" wx:for="{{orderList}}" wx:key="id">
-    <view class="orderItem" wx:for="{{item.list}}" wx:key="id"  wx:for-item="pitem">
+    <view class="orderItem" wx:for="{{item.list}}" wx:for-item="pitem">
       <image class="orderItem-image" src="{{pitem.image}}" mode="widthFix"></image>
       <view class="orderItem-meta">
         <view class="orderItem-name">{{pitem.name}}</view>
         <view class="orderItem-price">¥ {{pitem.price}}</view>
       </view>
       <view class="orderItem-module">
-        <view class="orderItem-btn">评价</view>
+        <view class="orderItem-btn" data-order_id="{{pitem.id}}" data-product_id="{{pitem.product_id}}" data-image="{{pitem.image}}" data-name="{{pitem.name}}" data-price="{{pitem.price}}" bindtap="onTapToEditComment">评价</view>
         <view class="orderItem-count">×{{pitem.count}}</view>
       </view>
     </view>

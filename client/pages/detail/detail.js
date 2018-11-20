@@ -18,13 +18,9 @@ Page({
     this.getProductDetail(options.id)
   },
   getProductDetail(id) {
-    wx.showLoading({
-      title: '商品详情加载中',
-    })
     qcloud.request({
       url: config.service.productDetail + id,
       success: res => {
-        wx.hideLoading()
         let product = res.data.data
         if (product) {
           this.setData({
@@ -37,17 +33,15 @@ Page({
         }
       },
       fail: res => {
-        wx.hideLoading()
         setTimeout(() => {
           wx.navigateBack()
         }, 2000)
-        console.log("faild! detail")
       }
     })
   },
   onTapBuy() {
     wx.showLoading({
-      title: '购买中...',
+      title: '正在购买...',
     })
     let product = Object.assign({
       count: 1
@@ -72,7 +66,7 @@ Page({
         } else {
           wx.showToast({
             icon: "none",
-            title: '购买失败',
+            title: '请重新购买',
           })
         }
       },
@@ -80,19 +74,18 @@ Page({
         wx.hideLoading()
         wx.showToast({
           icon: "none",
-          title: '购买失败',
+          title: '请重新购买',
         })
       }
     })
   },
   onTapAddToTrolley() {
+    wx.showLoading({
+      title: '加入购物车...',
+    })
     let product = {
       id: this.data.product.id
     }
-
-    wx.showLoading({
-      title: '加购中...',
-    })
     qcloud.request({
       url: config.service.trolleyUrl,
       login: true,
@@ -101,6 +94,7 @@ Page({
       success: res => {
         wx.hideLoading()
         let data = res.data
+
         if (!data.code) {
           wx.showToast({
             title: '加购成功',
@@ -121,6 +115,17 @@ Page({
           showCancel: false
         })
       }
+    })
+  },
+  onTapToComment() {
+    let product = this.data.product
+    let id = product.id
+    let name = product.name
+    let image = product.image
+    let price = product.price
+
+    wx.navigateTo({
+      url: `../comment/comment?id=${id}&image=${image}&price=${price}&name=${name}`
     })
   },
   /**

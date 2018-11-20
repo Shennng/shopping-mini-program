@@ -55,7 +55,6 @@ Page({
     wx.showLoading({
       title: '提交中...',
     })
-
     let trolleyList = this.data.trolleyList
 
     qcloud.request({
@@ -71,16 +70,15 @@ Page({
 
         if (!data.code) {
           wx.showToast({
-            title: '提交成功',
+            title: 'OK',
           })
           this.setData({
             isTrolleyEdit: false
           })
-          console.log(trolleyList)
         } else {
           wx.showToast({
             icon: "none",
-            title: '提交失败',
+            title: 'Please Repeat',
           })
         }
       },
@@ -88,7 +86,7 @@ Page({
         wx.hideLoading()
         wx.showToast({
           icon: "none",
-          title: '提交失败',
+          title: 'Please Repeat',
         })
       }
     })
@@ -187,7 +185,7 @@ Page({
   },
   getTrolley() {
     wx.showLoading({
-      title: '购物车数据加载中',
+      title: '正在刷新...',
     })
     qcloud.request({
       url: config.service.trolleyUrl,
@@ -200,7 +198,7 @@ Page({
           this.setData({
             trolleyList
           })
-        } else {
+        } else { 
           wx.showToast({
             icon: "none",
             title: '未成功获取数据',
@@ -251,7 +249,7 @@ Page({
 
         if (!data.code) {
           wx.showToast({
-            title: '结算完成',
+            title: '结算OK',
           })
           this.setData({
             trolleyCheckMap: [],
@@ -262,7 +260,7 @@ Page({
         } else {
           wx.showToast({
             icon: "none",
-            title: '结算失败',
+            title: 'Failed！',
           })
         }
       },
@@ -270,7 +268,7 @@ Page({
         wx.hideLoading()
         wx.showToast({
           icon: "none",
-          title: '结算失败',
+          title: 'Failed！',
         })
       }
     })

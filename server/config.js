@@ -36,7 +36,7 @@ const CONF = {
          */
         region: 'ap-guangzhou',
         // Bucket 名称
-        fileBucket: 'qcloudtest',
+        fileBucket: 'commentimage',
         // 文件夹
         uploadFolder: ''
     },

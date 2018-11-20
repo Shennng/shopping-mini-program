@@ -80,8 +80,16 @@
   margin-right: 27rpx;
 }
 
+.product-card.dis {
+  flex: 1;
+  background:#f9f9f9;
+  box-shadow: none;
+  border-radius: none;
+}
+
 .product-image {
   width: 100%;
+  height: auto;
   border-radius: 13rpx 13rpx 0 0;
 }
 

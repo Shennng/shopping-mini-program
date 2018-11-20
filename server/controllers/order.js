@@ -62,5 +62,13 @@ module.exports = {
     })
 
     ctx.state.data = res
+  },
+  update: async ctx => {
+    let order_id = + ctx.params.id
+    if (!isNaN(order_id)) {
+      await DB.query("DELETE FROM order_product WHERE order_product.order_id = ?", [order_id])
+      await DB.query("DELETE FROM order_user WHERE order_user.id = ?", [order_id])
+    }
+    ctx.state.data = {}
   }
 }

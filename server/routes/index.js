@@ -44,6 +44,9 @@ router.post("/order", validationMiddleware, controllers.order.add)
 //获取该用户所有订单数据
 router.get("/order", validationMiddleware, controllers.order.list)
 
+//评论后删除该订单
+router.put("/order/:id", validationMiddleware, controllers.order.update)
+
 //添加到或更新购物车
 router.put("/trolley", validationMiddleware, controllers.trolley.add)
 
@@ -52,5 +55,11 @@ router.get("/trolley", validationMiddleware, controllers.trolley.list)
 
 //删除旧数据，更新购物车数据
 router.post("/trolley", validationMiddleware, controllers.trolley.update)
+
+//提交新评价
+router.put("/comment", validationMiddleware, controllers.comment.add)
+
+//获取某商品全部评价
+router.get("/comment", controllers.comment.list)
 
 module.exports = router

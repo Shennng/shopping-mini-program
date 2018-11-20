@@ -22,9 +22,8 @@ Page({
   },
   getOrder() {
     wx.showLoading({
-      title: '订单加载中...',
+      title: '正在刷新...',
     })
-
     qcloud.request({
       url: config.service.orderUrl,
       login: true,
@@ -33,24 +32,21 @@ Page({
         let data = res.data
 
         if (!data.code) {
-          console.log("success")
           this.setData({
             orderList: data.data
           })
         } else {
           wx.showToast({
             icon: "none",
-            title: '未成功获取历史订单',
+            title: '刷新失败',
           })
         }
-        console.log(res)
       },
       fail: res=> {
         wx.hideLoading()
-        console.log("fail")
         wx.showToast({
           icon: "none",
-          title: '未成功获取历史订单',
+          title: '刷新失败',
         })
       }
     })
@@ -69,6 +65,18 @@ Page({
           authType: app.data.authType
         })
       }
+    })
+  },
+  onTapToEditComment(event) {
+    let data = event.currentTarget.dataset
+    let product_id = data.product_id
+    let order_id = data.order_id
+    let name = data.name
+    let price = data.price
+    let image = data.image
+
+    wx.navigateTo({
+      url: `../comment/comment?id=${product_id}&image=${image}&price=${price}&name=${name}&isCommentEdit=true&order_id=${order_id}`
     })
   },
   /**

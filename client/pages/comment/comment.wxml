@@ -1,0 +1,50 @@
+<!--pages/comment/comment.wxml-->
+<view class="product-card">
+  <image class="product-image" src="{{product.image}}" mode="widthFix"></image>
+  <view class="product-meta">
+    <view class="product-name">{{product.name}}</view>
+    <view class="product-price">￥ {{product.price}}</view>
+  </view>
+</view>
+
+<view class="comment-card" wx:if="{{ !isCommentEdit }}">
+  <view class="comment-count">{{comments.length}} 条评论</view>
+  <view class="comment-entry" wx:for="{{ comments }}" wx:key="user" wx:for-index="commentIndex">
+    <view class="user-meta">
+      <image class="user-avata" src="{{item.avatar}}"></image>
+      <view class="user-name">{{item.username}}</view>
+      <view class="comment-time">{{item.create_time}}</view>
+    </view>
+    <view class="comment-content">
+      <view class="comment-text">{{item.content}}</view>
+        <view class="comment-images" wx:if="{{item.images0}}">
+          <image class="comment-image"  wx:for="{{item.images0}}" wx:key="*this" src="{{item}}"  mode="aspectFill" bindtap="previewImage" data-url="{{item}}" data-index="{{commentIndex}}"></image>
+        </view>
+        <view class="comment-images" wx:if="{{item.images1}}">
+          <image class="comment-image" wx:for="{{item.images1}}" wx:key="*this" src="{{item}}"  mode="aspectFill" bindtap="previewImage" data-url="{{item}}" data-index="{{commentIndex}}"></image>
+        </view>
+        <view class="comment-images" wx:if="{{item.images2}}">
+          <image class="comment-image" wx:for="{{item.images2}}" wx:key="*this" src="{{item}}"  mode="aspectFill" bindtap="previewImage" data-url="{{item}}" data-index="{{commentIndex}}"></image>
+        </view>
+    </view>
+  </view>
+</view>
+
+<view class="comment-edit" wx:else>
+  <view class="comment-input">
+    <textarea class="comment-textarea" placeholder="请输入..." bindinput='onInput'/>
+      <view class="temp-images" wx:if="{{tempImages0}}">
+        <image class="temp-image" wx:for="{{tempImages0}}" wx:key="*this" src="{{item}}"  mode="aspectFill" bindtap="previewImage" data-url="{{item}}"></image>
+      </view>
+      <view class="temp-images" wx:if="{{tempImages1}}">
+        <image class="temp-image" wx:for="{{tempImages1}}" wx:key="*this" src="{{item}}"  mode="aspectFill" bindtap="previewImage" data-url="{{item}}"></image>
+      </view>
+      <view class="temp-images" wx:if="{{tempImages2}}">
+        <image class="temp-image" wx:for="{{tempImages2}}" wx:key="*this" src="{{item}}"  mode="aspectFill" bindtap="previewImage" data-url="{{item}}"></image>
+      </view>
+    <image class="comment-graph" src="../../images/image.png" bindtap="chooseImage"></image>
+  </view>
+  <view class="comment-btn {{commentValue ? '' : 'dis'}}"  bindtap='onTapCommit'>提交评价</view>
+</view>
+
+<view class="bottom-line" wx:if="{{ !isCommentEdit }}">我可是有底线的~</view>

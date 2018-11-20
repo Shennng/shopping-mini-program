@@ -1,8 +1,8 @@
 {
-	"client": "client/",
-	"svr": "server/",
-	"miniprogramRoot": "client/",
-	"qcloudRoot": "server/",
+	"description": "项目配置文件",
+	"packOptions": {
+		"ignore": []
+	},
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
@@ -10,9 +10,18 @@
 		"minified": true,
 		"newFeature": true
 	},
+	"compileType": "miniprogram",
+	"libVersion": "2.4.0",
 	"appid": "wx61f44d85f30626bb",
 	"projectname": "mall_wechatMiniProgram",
-	"libVersion": "2.4.0",
+	"svr": "server/",
+	"client": "client/",
+	"qcloudRoot": "server/",
+	"miniprogramRoot": "client/",
+	"debugOptions": {
+		"hidedInDevtools": []
+	},
+	"scripts": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -30,7 +39,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 3,
+			"current": 4,
 			"list": [
 				{
 					"id": -1,
@@ -55,6 +64,11 @@
 					"name": "购物车",
 					"pathName": "pages/trolley/trolley",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "评论页",
+					"pathName": "pages/comment/comment"
 				}
 			]
 		}

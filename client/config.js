@@ -33,7 +33,10 @@ var config = {
         orderUrl: `${host}/weapp/order`,
 
         //提交到购物车
-        trolleyUrl: `${host}/weapp/trolley`
+        trolleyUrl: `${host}/weapp/trolley`,
+
+        //评价相关
+        commentUrl: `${host}/weapp/comment`
     }
 };
 
